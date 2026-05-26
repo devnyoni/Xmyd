@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyoni Chart Community - NCC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        /* --- SIDEBAR: Orodha ya Chats --- */
+        .sidebar {
+            width: 350px;
+            background-color: #ffffff;
+            border-right: 1px solid #e3e3e3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            background-color: #004aad; /* Bluu kutoka kwenye nembo */
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f2f2f2;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .chat-item:hover {
+            background-color: #f5f6f6;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #ff1a1a; /* Nyekundu kutoka kwenye nembo */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .chat-info h4 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .chat-info p {
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 230px;
+        }
+
+        /* --- MAIN CHAT WINDOW: Sehemu ya Meseji --- */
+        .chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #efeae2; /* Rangi ya background ya WhatsApp */
+        }
+
+        .chat-window-header {
+            background-color: #004aad;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-window-header h3 {
+            font-size: 18px;
+        }
+
+        .message-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Mitindo ya Meseji */
+        .message {
+            max-width: 65%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 15px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .message.incoming {
+            background-color: #ffffff;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .message.outgoing {
+            background-color: #d9fdd3; /* Rangi ya meseji za kutoka za WhatsApp */
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .message-time {
+            font-size: 10px;
+            color: #666;
+            text-align: right;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Input ya Chini ya Kutuma Meseji */
+        .input-area {
+            background-color: #f0f2f5;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .send-btn {
+            background-color: #ff1a1a; /* Nyekundu ya NCC kama kitufe */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .send-btn:hover {
+            background-color: #cc0000;
+        }
+
+        /* Responsive kwa ajili ya Simu */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: 40vh;
+            }
+            .chat-window {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            NCC - Nyoni Chart
+        </div>
+        <div class="chat-list">
+            <div class="chat-item" onclick="changeChat('Group la NCC', 'Kundi Kuu la Jumuiya')">
+                <div class="avatar">NCC</div>
+                <div class="chat-info">
+                    <h4>Group la NCC 🌍</h4>
+                    <p>Karibuni kwenye jumuiya ya Nyoni Chart...</p>
+                </div>
+            </div>
+            <div class="chat-item" onclick="changeChat('Juma Shariff', 'Mwanachama')">
+                <div class="avatar">JS</div>
+                <div class="chat-info">
+                    <h4>Juma Shariff</h4>
+                    <p>Kiongozi kile kikao cha NCC ni saa ngapi?</p>
+                </div>
+            </div>
+            <div class="chat-item" onclick="changeChat('Anna Nyoni', 'Mwanachama')">
+                <div class="avatar">AN</div>
+                <div class="chat-info">
+                    <h4>Anna Nyoni</h4>
+                    <p>App inaonekana vizuri sana!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-window">
+        <div class="chat-window-header">
+            <div>
+                <h3 id="current-chat-name">Group la NCC 🌍</h3>
+                <span id="current-chat-status" style="font-size: 12px; opacity: 0.8;">Kundi Kuu la Jumuiya</span>
+            </div>
+        </div>
+
+        <div class="message-area" id="message-container">
+            <div class="message incoming">
+                Habari! Karibu kwenye Nyoni Chart Community (NCC). Hapa ndio muonekano wa app yako utakavyokuwa.
+                <span class="message-time">10:00 AM</span>
+            </div>
+            <div class="message outgoing">
+                Asante! Huu muonekano unafanana kabisa na WhatsApp, napenda rangi za nembo yetu zilivyokaa.
+                <span class="message-time">10:02 AM</span>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Andika meseji hapa..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Tuma</button>
+        </div>
+    </div>
+
+    <script>
+        // Kazi ya kutuma meseji
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const messageText = input.value.trim();
+            
+            if (messageText !== "") {
+                const container = document.getElementById('message-container');
+                
+                // Tengeneza element mpya ya meseji
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', 'outgoing');
+                
+                // Pata muda wa sasa
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                messageDiv.innerHTML = `${messageText} <span class="message-time">${timeStr}</span>`;
+                
+                // Weka kwenye eneo la meseji
+                container.appendChild(messageDiv);
+                
+                // Safisha input
+                input.value = "";
+                
+                // Sogeza scroll kwenda chini kabisa
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        // Kutuma kwa kubonyeza 'Enter' kwenye keyboard
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Kazi ya kubadilisha mtu unayechat naye (Simulated)
+        function changeChat(name, status) {
+            document.getElementById('current-chat-name').innerText = name;
+            document.getElementById('current-chat-status').innerText = status;
+            document.getElementById('message-container').innerHTML = `
+                <div class="message incoming">
+                    Huu ni mwanzo wa mazungumzo yako na ${name}.
+                    <span class="message-time">Sasa hivi</span>
+                </div>
+            `;
+        }
+    </style>
+</body>
+</html>
